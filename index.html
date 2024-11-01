@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic"
+    />
+    <!-- <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.1/milligram.css"
+    /> -->
+    <link rel="stylesheet" href="styles.css" />
+    <title>Instashop Products</title>
+  </head>
+  <body>
+    <div class="wrapper">
+      <div id="filter" class="filter">
+        <div class="branch-selection">
+          <h4>Branch</h4>
+          <label>
+            <input type="radio" name="branch" checked value="nargis" />
+            Nargis
+          </label>
+          <label>
+            <input type="radio" name="branch" value="defaa" />
+            Defaa
+          </label>
+          <label>
+            <input type="radio" name="branch" value="maady" />
+            Maady
+          </label>
+        </div>
+
+        <form id="compare-form">
+          <h3>Filter Products</h3>
+          <div id="store-selection">
+            <!-- Store options will be dynamically generated here -->
+          </div>
+          <button type="submit">Compare</button>
+          <button type="button" id="reset-button">Reset</button>
+        </form>
+        <div id="pagination-controls">
+          <button id="prev-button" disabled>Previous</button>
+          <span id="page-indicator">1 / 1</span>
+          <button id="next-button">Next</button>
+        </div>
+      </div>
+
+      <div class="container">
+        <main class="" id="product-container">
+          <!-- Product items will be dynamically inserted here -->
+        </main>
+      </div>
+    </div>
+
+    <script src="products-nargis.js"></script>
+    <script src="products-defaa.js"></script>
+    <script src="products-maady.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
