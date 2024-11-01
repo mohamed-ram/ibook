@@ -280,27 +280,6 @@ branchRadios.forEach((radio) => {
   });
 });
 
-// Initialize page
-// window.onload = () => {
-//   loadStoreOptions();
-//   displayProducts(products);
-//   setupPagination(products);
-// };
-
-// // Load store options dynamically
-// function loadStoreOptions() {
-//   const storeSelection = document.getElementById("store-selection");
-//   const uniqueStores = new Set(
-//     products.flatMap((product) => product.stores.map((store) => store.store))
-//   );
-
-//   uniqueStores.forEach((store) => {
-//     const label = document.createElement("label");
-//     label.innerHTML = `<input type="checkbox" name="stores" value="${store}"> ${store}<br>`;
-//     storeSelection.appendChild(label);
-//   });
-// }
-
 // Display products on current page with pagination
 function displayProducts(productsToShow) {
   const container = document.getElementById("product-container");
@@ -408,7 +387,7 @@ function getUniqueProducts(selectedStores) {
     }
   });
 
-  return Array.from(uniqueProducts.values()); // Convert Map values back to an array
+  return Array.from(uniqueProducts.values());
 }
 
 // Paginate products for display
@@ -443,3 +422,28 @@ function setupPagination(filteredProducts) {
     }
   };
 }
+
+const searchProducts = () => {
+  document
+    .querySelectorAll('input[name="stores"]')
+    .forEach((input) => (input.checked = false));
+
+  const searchTerm = document
+    .getElementById("search-input")
+    .value.toLowerCase();
+
+  // Filter products based on title or packaging that contains the search term
+  const filteredProducts = products.filter(
+    (product) =>
+      product.title.toLowerCase().includes(searchTerm) ||
+      product.packaging.toLowerCase().includes(searchTerm)
+  );
+
+  displayProducts(filteredProducts); // Display the filtered products
+  setupPagination(filteredProducts); // Update pagination based on filtered products
+};
+
+// Optional: Add "Enter" key support for the search input
+document.getElementById("search-input").addEventListener("change", () => {
+  searchProducts();
+});

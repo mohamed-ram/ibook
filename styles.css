@@ -253,3 +253,25 @@ button#reset-button:hover {
 .branch-selection label:hover {
   color: #007bff; /* Optional: change text color on hover */
 }
+
+#search-container {
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+}
+
+#search-input {
+  padding: 12px;
+  font-size: 16px;
+  width: 100%;
+  border: 1px dashed grey;
+  outline: none;
+  margin: 0 auto;
+  transition: border-color 0.3s ease; /* Smooth transition for border color */
+}
+
+#search-input:focus {
+  border-color: green; /* Green outline when active */
+}
+
+
