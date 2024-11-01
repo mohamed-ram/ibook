@@ -26,17 +26,22 @@ main {
 
 
 .product-card {
-  border: 1px solid #ccc;
+  border: 0.5px solid #ccc;
   border-radius: 5px;
   margin-bottom: 10px;
   padding: 5px;
   /* width: 300px; */
   height: 450px;
   background-color: white;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  /* transition: all ease-in 0.5s; */
+}
+
+.product-card:hover{
+  border: 0.5px dashed #ccc;
 }
 
 .product-card .img-container{
@@ -243,6 +248,11 @@ button#reset-button:hover {
   font-size: 1em;
   cursor: pointer;
   color: #555;
+  white-space: nowrap; /* Prevents line breaks */
+  overflow: hidden;    /* Hides overflowed content */
+  text-overflow: ellipsis; /* Adds "..." at the end if the text overflows */
+  display: inline-block; /* Needed for text-overflow to work */
+  max-width: 200px; /* Set a max width as needed */
 }
 
 .branch-selection input[type="radio"] {
@@ -264,7 +274,7 @@ button#reset-button:hover {
   padding: 12px;
   font-size: 16px;
   width: 100%;
-  border: 1px dashed grey;
+  border: 1px dashed #ccc;
   outline: none;
   margin: 0 auto;
   transition: border-color 0.3s ease; /* Smooth transition for border color */

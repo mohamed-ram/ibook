@@ -411,6 +411,10 @@ function setupPagination(filteredProducts) {
       currentPage--;
       displayProducts(filteredProducts);
       setupPagination(filteredProducts);
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
     }
   };
 
@@ -419,6 +423,10 @@ function setupPagination(filteredProducts) {
       currentPage++;
       displayProducts(filteredProducts);
       setupPagination(filteredProducts);
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
     }
   };
 }
@@ -439,8 +447,9 @@ const searchProducts = () => {
       product.packaging.toLowerCase().includes(searchTerm)
   );
 
-  displayProducts(filteredProducts); // Display the filtered products
-  setupPagination(filteredProducts); // Update pagination based on filtered products
+  currentPage = 1;
+  displayProducts(filteredProducts);
+  setupPagination(filteredProducts);
 };
 
 // Optional: Add "Enter" key support for the search input
