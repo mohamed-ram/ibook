@@ -1,199 +1,3 @@
-// // Load products and stores on page load
-// window.onload = () => {
-//   loadProducts();
-//   loadStoreOptions();
-// };
-
-// const stores = {
-//   Ibook:
-//     "https://cdn.instashop.ae/82df8e681ac5c11287376a603451b341_ibook-500x500.png",
-//   "El Fares":
-//     "https://cdn.instashop.ae/ada24a9d1689a49d4f55faab3802ee8b_samer-stationery--500x500_-1-.png",
-//   "Office Works":
-//     "https://cdn.instashop.ae/0fdabc2095bc0ad633125edd431e0022_office-works-500x500.png",
-//   "Samir & Aly":
-//     "https://cdn.instashop.ae/cc55c1cf810cc061109de03866017edf_samir-n-ali-500x500.png",
-//   Bakier:
-//     "https://cdn.instashop.ae/6f1d56f819e744e3de7eb940df612c65_bakier_2.png",
-//   "El Mallah":
-//     "https://cdn.instashop.ae/c3f63cd2d51e0acab64dec2511502395_el-malah-stationery-500x500.png",
-// };
-
-// const products = productData.slice(0, 30);
-// function loadProducts() {
-//   const container = document.getElementById("product-container");
-
-//   products.forEach((product) => {
-//     const prices = product.stores.map((store) => store.price);
-//     const minPrice = Math.min(...prices);
-//     const maxPrice = Math.max(...prices);
-//     const card = document.createElement("div");
-//     card.className = "product-card";
-//     card.innerHTML = `
-//           <div class="img-container">
-//             <img src="${product.img}" alt="${product.title}">
-//           </div>
-//           <div class="product-info">
-//           <small>${product.packaging}</small>
-//           <h4>${product.title}</h4>
-//           </div>
-//           <div class="store-cards">
-//           ${product.stores
-//             .map((store) => {
-//               const priceValue = parseFloat(
-//                 store.price.replace(/[^0-9.-]+/g, "")
-//               );
-//               let priceColor = "#7c7382";
-//               let priceTitle = "";
-
-//               // Determine color based on price conditions
-//               if (product.stores.length > 1) {
-//                 if (priceValue === minPrice) {
-//                   priceColor = "green"; // Low price
-//                   priceTitle = "Lowest price";
-//                 } else if (priceValue === maxPrice) {
-//                   priceColor = "red"; // High price
-//                   priceTitle = "Highest price";
-//                 }
-//               }
-
-//               return `
-//                       <div class="store-card">
-//                           <img src=${stores[store.store]}
-//                                 alt=${stores[store.store]}
-//                                 width='50px'
-//                           />
-//                           <p title='${priceTitle}' style='color:${priceColor}' class="price">${Math.round(
-//                 store.price
-//               )}</p>
-//                       </div>`;
-//             })
-//             .join("")}
-//           </div>
-//       `;
-//     container.appendChild(card);
-//   });
-// }
-
-// function loadStoreOptions() {
-//   const storeSelection = document.getElementById("store-selection");
-//   const uniqueStores = new Set();
-
-//   products.forEach((product) => {
-//     product.stores.forEach((store) => {
-//       uniqueStores.add(store.store);
-//     });
-//   });
-
-//   uniqueStores.forEach((store) => {
-//     const label = document.createElement("label");
-//     label.innerHTML = `
-//           <input type="checkbox" name="stores" value="${store}"> ${store}<br>
-//       `;
-//     storeSelection.appendChild(label);
-//   });
-// }
-
-// // Handle form submission for comparing stores
-// document.getElementById("compare-form").onsubmit = function (event) {
-//   event.preventDefault();
-//   const selectedStores = Array.from(
-//     document.querySelectorAll('input[name="stores"]:checked')
-//   ).map((input) => input.value);
-
-//   if (selectedStores.length === 0) {
-//     alert("Please select at least one store to compare.");
-//     return;
-//   }
-
-//   const uniqueProducts = getUniqueProducts(selectedStores);
-//   displayComparison(uniqueProducts);
-// };
-
-// function getUniqueProducts(selectedStores) {
-//   const uniqueProducts = products.filter((product) => {
-//     const productStores = product.stores.map((store) => store.store);
-//     return (
-//       selectedStores.every((store) => productStores.includes(store)) &&
-//       selectedStores.length === productStores.length
-//     );
-//   });
-//   return uniqueProducts;
-// }
-
-// // Handle reset button click
-// document.getElementById("reset-button").onclick = function () {
-//   // Uncheck all checkboxes
-//   document
-//     .querySelectorAll('input[name="stores"]')
-//     .forEach((input) => (input.checked = false));
-
-//   displayComparison(products);
-// };
-
-// function displayComparison(products) {
-//   const container = document.getElementById("product-container");
-//   container.innerHTML = "";
-
-//   if (products.length === 0) {
-//     container.innerHTML = "<p>No common products found in selected stores.</p>";
-//     return;
-//   }
-
-//   products.forEach((product) => {
-//     const prices = product.stores.map((store) => store.price);
-//     const minPrice = Math.min(...prices);
-//     const maxPrice = Math.max(...prices);
-//     const card = document.createElement("div");
-//     card.className = "product-card";
-//     card.innerHTML = `
-//           <div class="img-container">
-//             <img src="${product.img}" alt="${product.title}">
-//           </div>
-//           <div class="product-info">
-//           <small>${product.packaging}</small>
-//           <h4>${product.title}</h4>
-//           </div>
-//           <div class="store-cards">
-//           ${product.stores
-//             .map((store) => {
-//               const priceValue = parseFloat(
-//                 store.price.replace(/[^0-9.-]+/g, "")
-//               );
-//               let priceColor = "#7c7382";
-//               let priceTitle = "";
-
-//               // Determine color based on price conditions
-//               if (product.stores.length > 1) {
-//                 if (priceValue === minPrice) {
-//                   priceColor = "green"; // Low price
-//                   priceTitle = "Lowest price";
-//                 } else if (priceValue === maxPrice) {
-//                   priceColor = "red"; // High price
-//                   priceTitle = "Highest price";
-//                 }
-//               }
-
-//               return `
-//                       <div class="store-card">
-//                           <img src=${stores[store.store]}
-//                                 alt=${stores[store.store]}
-//                                 width='50px'
-//                           />
-//                           <p title='${priceTitle}' style='color:${priceColor}' class="price">${Math.round(
-//                 store.price
-//               )}</p>
-//                       </div>`;
-//             })
-//             .join("")}
-//           </div>
-//       `;
-//     container.appendChild(card);
-//   });
-// }
-
-// ===============================================
-
 // Constants
 const itemsPerPage = 48;
 let currentPage = 1;
@@ -280,6 +84,50 @@ branchRadios.forEach((radio) => {
   });
 });
 
+// function downloadImage(button) {
+//   const productDiv = button.closest(".product-card");
+//   const title = productDiv.querySelector(".title").innerText;
+
+//   html2canvas(productDiv).then((canvas) => {
+//     // Create a link element
+//     const link = document.createElement("a");
+//     link.download = `${title}.png`;
+//     link.href = canvas.toDataURL("image/png");
+//     link.click();
+//   });
+// }
+
+// function downloadImage(button) {
+//   const productDiv = button.closest(".product-card");
+//   const title = productDiv.querySelector(".title").innerText;
+
+//   html2canvas(productDiv, {
+//     useCORS: true,
+//     allowTaint: true,
+//   }).then((canvas) => {
+//     const link = document.createElement("a");
+//     link.download = `${title}.png`;
+//     link.href = canvas.toDataURL("image/png");
+//     link.click();
+//   });
+// }
+
+function downloadImage(button) {
+  const productDiv = button.closest(".product-card");
+  const title = productDiv.querySelector(".title").innerText;
+
+  // Use html2canvas to capture the product div as a canvas
+  html2canvas(productDiv, {
+    useCORS: true,
+    allowTaint: true,
+  }).then((canvas) => {
+    const link = document.createElement("a");
+    link.download = `${title}.png`;
+    link.href = canvas.toDataURL("image/png");
+    link.click();
+  });
+}
+
 // Display products on current page with pagination
 function displayProducts(productsToShow) {
   const container = document.getElementById("product-container");
@@ -306,40 +154,44 @@ function createProductCard(product) {
   const card = document.createElement("div");
   card.className = "product-card";
   card.innerHTML = `
-    <div class="img-container">
-      <img src="${product.img}" alt="${product.title}">
+  <div class="img-container">
+    <div class="download-container">
+      <img onclick="downloadImage(this)" class="download" src="./download.png" alt="Download" />
     </div>
-    <div class="product-info">
-      <small>${product.packaging}</small>
-      <h4>${product.title}</h4>
-    </div>
-    <div class="store-cards">
-      ${product.stores
-        .map((store) => {
-          const priceValue = parseFloat(store.price.replace(/[^0-9.-]+/g, ""));
-          let priceColor = "#7c7382";
-          let priceTitle = "";
+    <img src="${product.img}" alt="${product.title}">
+  </div>
+  <div class="product-info">
+    <small>${product.packaging}</small>
+    <h4 class="title">${product.title}</h4>
+  </div>
+  <div class="store-cards">
+    ${product.stores
+      .map((store) => {
+        const priceValue = parseFloat(store.price.replace(/[^0-9.-]+/g, ""));
+        let priceColor = "#7c7382";
+        let priceTitle = "";
 
-          if (product.stores.length > 1) {
-            if (priceValue === minPrice) {
-              priceColor = "green";
-              priceTitle = "Lowest price";
-            } else if (priceValue === maxPrice) {
-              priceColor = "red";
-              priceTitle = "Highest price";
-            }
+        if (product.stores.length > 1) {
+          if (priceValue === minPrice) {
+            priceColor = "green";
+            priceTitle = "Lowest price";
+          } else if (priceValue === maxPrice) {
+            priceColor = "red";
+            priceTitle = "Highest price";
           }
+        }
 
-          return `
-            <div class="store-card">
-              <img src=${stores[store.store]} alt=${store.store} width="50px" />
-              <p title="${priceTitle}" style="color:${priceColor}" class="price">${Math.round(
-            store.price
-          )}</p>
-            </div>`;
-        })
-        .join("")}
-    </div>`;
+        return `
+          <div class="store-card">
+            <img src=${stores[store.store]} alt="${store.store}" width="50px" />
+            <p title="${priceTitle}" style="color:${priceColor}" class="price">${Math.round(
+          store.price
+        )}</p>
+          </div>`;
+      })
+      .join("")}
+  </div>`;
+
   return card;
 }
 
