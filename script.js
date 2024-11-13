@@ -97,26 +97,10 @@ branchRadios.forEach((radio) => {
 //   });
 // }
 
-// function downloadImage(button) {
-//   const productDiv = button.closest(".product-card");
-//   const title = productDiv.querySelector(".title").innerText;
-
-//   html2canvas(productDiv, {
-//     useCORS: true,
-//     allowTaint: true,
-//   }).then((canvas) => {
-//     const link = document.createElement("a");
-//     link.download = `${title}.png`;
-//     link.href = canvas.toDataURL("image/png");
-//     link.click();
-//   });
-// }
-
 function downloadImage(button) {
   const productDiv = button.closest(".product-card");
   const title = productDiv.querySelector(".title").innerText;
 
-  // Use html2canvas to capture the product div as a canvas
   html2canvas(productDiv, {
     useCORS: true,
     allowTaint: true,
