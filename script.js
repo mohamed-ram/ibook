@@ -2,20 +2,13 @@
 const itemsPerPage = 48;
 let currentPage = 1;
 const stores = {
-  Ibook:
-    "https://cdn.instashop.ae/82df8e681ac5c11287376a603451b341_ibook-500x500.png",
-  IBook:
-    "https://cdn.instashop.ae/82df8e681ac5c11287376a603451b341_ibook-500x500.png",
-  "El Fares":
-    "https://cdn.instashop.ae/ada24a9d1689a49d4f55faab3802ee8b_samer-stationery--500x500_-1-.png",
-  "Office Works":
-    "https://cdn.instashop.ae/0fdabc2095bc0ad633125edd431e0022_office-works-500x500.png",
-  "Samir & Aly":
-    "https://cdn.instashop.ae/cc55c1cf810cc061109de03866017edf_samir-n-ali-500x500.png",
-  Bakier:
-    "https://cdn.instashop.ae/6f1d56f819e744e3de7eb940df612c65_bakier_2.png",
-  "El Mallah":
-    "https://cdn.instashop.ae/c3f63cd2d51e0acab64dec2511502395_el-malah-stationery-500x500.png",
+  Ibook: "./imgs/stores/ibook.png",
+  IBook: "./imgs/stores/ibook.png",
+  "El Fares": "./imgs/stores/elfares.png",
+  "Office Works": "./imgs/stores/office works.png",
+  "Samir & Aly": "./imgs/stores/samir.png",
+  Bakier: "./imgs/stores/bakir.png",
+  "El Mallah": "./imgs/stores/elmallah.png",
 };
 
 let products;
@@ -85,31 +78,55 @@ branchRadios.forEach((radio) => {
 });
 
 // function downloadImage(button) {
-//   const productDiv = button.closest(".product-card");
-//   const title = productDiv.querySelector(".title").innerText;
+//   const productDiv = button.closest(".product-card"); // Capture the entire product-card div
+//   const title = productDiv.querySelector(".title").innerText; // Use the title for the file name
 
-//   html2canvas(productDiv).then((canvas) => {
+//   // Use html2canvas with the useCORS option
+//   html2canvas(productDiv, {
+//     useCORS: true, // Enable CORS handling
+//     allowTaint: true, // Allow tainted images (in case CORS fails)
+//   }).then((canvas) => {
 //     // Create a link element
 //     const link = document.createElement("a");
-//     link.download = `${title}.png`;
-//     link.href = canvas.toDataURL("image/png");
-//     link.click();
+//     link.download = `${title}.png`; // Use the title as the file name
+//     link.href = canvas.toDataURL("image/png"); // Convert canvas to image URL
+//     link.click(); // Trigger download
 //   });
 // }
 
 function downloadImage(button) {
   const productDiv = button.closest(".product-card");
   const title = productDiv.querySelector(".title").innerText;
+  const imageUrl = "http://localhost:8000/imgs/download.png"; // Use your local server URL
 
-  html2canvas(productDiv, {
-    useCORS: true,
-    allowTaint: true,
-  }).then((canvas) => {
+  const image = new Image();
+  image.crossOrigin = "Anonymous"; // Set the CORS policy
+  image.src = imageUrl;
+
+  image.onload = () => {
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+
+    canvas.width = 400;
+    canvas.height = 300;
+
+    ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+
+    ctx.font = "20px Arial";
+    ctx.fillStyle = "black";
+    ctx.fillText(title, 10, canvas.height - 20);
+
     const link = document.createElement("a");
     link.download = `${title}.png`;
     link.href = canvas.toDataURL("image/png");
     link.click();
-  });
+  };
+
+  image.onerror = () => {
+    alert(
+      "Unable to load image. Please check the URL or your server settings."
+    );
+  };
 }
 
 // Display products on current page with pagination
@@ -140,7 +157,7 @@ function createProductCard(product) {
   card.innerHTML = `
   <div class="img-container">
     <div class="download-container">
-      <img onclick="downloadImage(this)" class="download" src="./download.png" alt="Download" />
+      <img onclick="downloadImage(this)" class="download" src="./imgs/download.png" alt="Download" />
     </div>
     <img src="${product.img}" alt="${product.title}">
   </div>
