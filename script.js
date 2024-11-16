@@ -1,14 +1,36 @@
 // Constants
 const itemsPerPage = 48;
 let currentPage = 1;
+
 const stores = {
-  Ibook: "./imgs/stores/ibook.png",
-  IBook: "./imgs/stores/ibook.png",
-  "El Fares": "./imgs/stores/elfares.png",
-  "Office Works": "./imgs/stores/office works.png",
-  "Samir & Aly": "./imgs/stores/samir.png",
-  Bakier: "./imgs/stores/bakir.png",
-  "El Mallah": "./imgs/stores/elmallah.png",
+  "Ibook Stationery": {
+    name: "Ibook",
+    img: "https://cdn.instashop.ae/82df8e681ac5c11287376a603451b341_ibook-500x500.png",
+  },
+  "IBook Stationery": {
+    name: "Ibook",
+    img: "https://cdn.instashop.ae/82df8e681ac5c11287376a603451b341_ibook-500x500.png",
+  },
+  "El Fares Stationery": {
+    name: "El Fares",
+    img: "https://cdn.instashop.ae/ada24a9d1689a49d4f55faab3802ee8b_samer-stationery--500x500_-1-.png",
+  },
+  "Office Works": {
+    name: "Office Works",
+    img: "https://cdn.instashop.ae/0fdabc2095bc0ad633125edd431e0022_office-works-500x500.png",
+  },
+  "Samir & Aly Stationery": {
+    name: "Samir & Aly",
+    img: "https://cdn.instashop.ae/cc55c1cf810cc061109de03866017edf_samir-n-ali-500x500.png",
+  },
+  "Bakier Stationery & More": {
+    name: "Bakier",
+    img: "https://cdn.instashop.ae/6f1d56f819e744e3de7eb940df612c65_bakier_2.png",
+  },
+  "El Mallah Stationery": {
+    name: "El Mallah",
+    img: "https://cdn.instashop.ae/c3f63cd2d51e0acab64dec2511502395_el-malah-stationery-500x500.png",
+  },
 };
 
 let products;
@@ -31,6 +53,7 @@ const updateProducts = (selectedBranch) => {
 
 // Modify loadStoreOptions to filter based on current products
 function loadStoreOptions(currentProducts) {
+  document.getElementById("search-input").value = "";
   const storeSelection = document.getElementById("store-selection");
   storeSelection.innerHTML = ""; // Clear existing options
   const uniqueStores = new Set();
@@ -45,7 +68,7 @@ function loadStoreOptions(currentProducts) {
   uniqueStores.forEach((store) => {
     const label = document.createElement("label");
     label.innerHTML = `
-          <input type="checkbox" name="stores" value="${store}"> ${store}<br>
+          <input type="checkbox" name="stores" value="${store}"> ${stores[store].name}<br>
       `;
     storeSelection.appendChild(label);
   });
@@ -56,8 +79,6 @@ branchRadios.forEach((radio) => {
   radio.addEventListener("change", function () {
     const selectedBranch = this.value;
     updateProducts(selectedBranch);
-    console.log("Selected Branch:", selectedBranch);
-    console.log("Updated Products:", products);
   });
 });
 
@@ -66,8 +87,6 @@ const defaultBranch = document.querySelector(
   'input[name="branch"]:checked'
 ).value;
 updateProducts(defaultBranch);
-console.log("Default Selected Branch on Load:", defaultBranch);
-console.log("Initial Products:", products);
 
 // Add change event listener to each radio button
 branchRadios.forEach((radio) => {
@@ -78,56 +97,39 @@ branchRadios.forEach((radio) => {
 });
 
 // function downloadImage(button) {
-//   const productDiv = button.closest(".product-card"); // Capture the entire product-card div
-//   const title = productDiv.querySelector(".title").innerText; // Use the title for the file name
+//   const productDiv = button.closest(".product-card");
+//   const title = productDiv.querySelector(".title").innerText;
+//   const imageUrl = "http://localhost:8000/imgs/download.png"; // Use your local server URL
 
-//   // Use html2canvas with the useCORS option
-//   html2canvas(productDiv, {
-//     useCORS: true, // Enable CORS handling
-//     allowTaint: true, // Allow tainted images (in case CORS fails)
-//   }).then((canvas) => {
-//     // Create a link element
+//   const image = new Image();
+//   image.crossOrigin = "Anonymous"; // Set the CORS policy
+//   image.src = imageUrl;
+
+//   image.onload = () => {
+//     const canvas = document.createElement("canvas");
+//     const ctx = canvas.getContext("2d");
+
+//     canvas.width = 400;
+//     canvas.height = 300;
+
+//     ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+
+//     ctx.font = "20px Arial";
+//     ctx.fillStyle = "black";
+//     ctx.fillText(title, 10, canvas.height - 20);
+
 //     const link = document.createElement("a");
-//     link.download = `${title}.png`; // Use the title as the file name
-//     link.href = canvas.toDataURL("image/png"); // Convert canvas to image URL
-//     link.click(); // Trigger download
-//   });
+//     link.download = `${title}.png`;
+//     link.href = canvas.toDataURL("image/png");
+//     link.click();
+//   };
+
+//   image.onerror = () => {
+//     alert(
+//       "Unable to load image. Please check the URL or your server settings."
+//     );
+//   };
 // }
-
-function downloadImage(button) {
-  const productDiv = button.closest(".product-card");
-  const title = productDiv.querySelector(".title").innerText;
-  const imageUrl = "http://localhost:8000/imgs/download.png"; // Use your local server URL
-
-  const image = new Image();
-  image.crossOrigin = "Anonymous"; // Set the CORS policy
-  image.src = imageUrl;
-
-  image.onload = () => {
-    const canvas = document.createElement("canvas");
-    const ctx = canvas.getContext("2d");
-
-    canvas.width = 400;
-    canvas.height = 300;
-
-    ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
-
-    ctx.font = "20px Arial";
-    ctx.fillStyle = "black";
-    ctx.fillText(title, 10, canvas.height - 20);
-
-    const link = document.createElement("a");
-    link.download = `${title}.png`;
-    link.href = canvas.toDataURL("image/png");
-    link.click();
-  };
-
-  image.onerror = () => {
-    alert(
-      "Unable to load image. Please check the URL or your server settings."
-    );
-  };
-}
 
 // Display products on current page with pagination
 function displayProducts(productsToShow) {
@@ -157,7 +159,7 @@ function createProductCard(product) {
   card.innerHTML = `
   <div class="img-container">
     <div class="download-container">
-      <img onclick="downloadImage(this)" class="download" src="./imgs/download.png" alt="Download" />
+      <img class="download" src="./imgs/download.png" alt="Download" />
     </div>
     <img src="${product.img}" alt="${product.title}">
   </div>
@@ -168,7 +170,8 @@ function createProductCard(product) {
   <div class="store-cards">
     ${product.stores
       .map((store) => {
-        const priceValue = parseFloat(store.price.replace(/[^0-9.-]+/g, ""));
+        const hasOffer = store["discount price"];
+        const priceValue = parseFloat(store.price);
         let priceColor = "#7c7382";
         let priceTitle = "";
 
@@ -183,12 +186,32 @@ function createProductCard(product) {
         }
 
         return `
-          <div class="store-card">
-            <img src=${stores[store.store]} alt="${store.store}" width="50px" />
-            <p title="${priceTitle}" style="color:${priceColor}" class="price">${Math.round(
-          store.price
-        )}</p>
-          </div>`;
+  <div class="store-card">
+    <img src="${stores[store.store].img}" alt="${store.store}" width="50px" />
+    <p 
+      title="${priceTitle}" 
+      style="color:${priceColor}; 
+             text-decoration:${hasOffer ? "line-through" : "none"}; 
+             font-size:${hasOffer ? "16px" : "30px"}; 
+             font-weight:${hasOffer ? "200" : "bold"};  
+             margin:${hasOffer ? "0" : "5px"};" 
+      class="price">
+        ${store.price}
+    </p>
+    ${
+      hasOffer
+        ? `<p 
+            title="${priceTitle}" 
+            style="color:#8B5DFF; 
+                   font-size:30px;
+                   font-weight:bold; 
+                   margin:0px;" 
+            class="price">
+                ${store["discount price"]}
+          </p>`
+        : ""
+    }
+  </div>`;
       })
       .join("")}
   </div>`;
@@ -220,6 +243,7 @@ document.getElementById("reset-button").onclick = function () {
     .querySelectorAll('input[name="stores"]')
     .forEach((input) => (input.checked = false));
   displayProducts(products);
+  currentPage = 1;
   setupPagination(products);
 };
 
