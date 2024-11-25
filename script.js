@@ -36,9 +36,9 @@ const stores = {
 let products;
 
 const branchProductsMap = {
-  defaa: productDefaa,
-  maady: productMaady,
-  nargis: productNargis,
+  defaa: productsDefaa,
+  maady: productsMaady,
+  nargis: productsNargis,
 };
 
 const branchRadios = document.querySelectorAll('input[name="branch"]');
@@ -96,40 +96,68 @@ branchRadios.forEach((radio) => {
   });
 });
 
-// function downloadImage(button) {
-//   const productDiv = button.closest(".product-card");
-//   const title = productDiv.querySelector(".title").innerText;
-//   const imageUrl = "http://localhost:8000/imgs/download.png"; // Use your local server URL
+// Function to display a toast message
+function showToast(message) {
+  // Create toast container if it doesn't exist
+  let toastContainer = document.querySelector(".toast-container");
+  if (!toastContainer) {
+    toastContainer = document.createElement("div");
+    toastContainer.className = "toast-container";
+    document.body.appendChild(toastContainer);
+  }
 
-//   const image = new Image();
-//   image.crossOrigin = "Anonymous"; // Set the CORS policy
-//   image.src = imageUrl;
+  // Create the toast element
+  const toast = document.createElement("div");
+  toast.className = "toast";
+  toast.textContent = message;
 
-//   image.onload = () => {
-//     const canvas = document.createElement("canvas");
-//     const ctx = canvas.getContext("2d");
+  // Append the toast to the container
+  toastContainer.appendChild(toast);
 
-//     canvas.width = 400;
-//     canvas.height = 300;
+  // Remove the toast after the animation ends
+  toast.addEventListener("animationend", () => {
+    toast.remove();
+  });
+}
 
-//     ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+function shareProduct(branch, id) {
+  // Generate the product URL
+  console.log(branch, id);
+  const productUrl = `${window.location.origin}/details.html?branch=${branch}&id=${id}`;
 
-//     ctx.font = "20px Arial";
-//     ctx.fillStyle = "black";
-//     ctx.fillText(title, 10, canvas.height - 20);
+  // Copy the URL to the clipboard
+  navigator.clipboard
+    .writeText(productUrl)
+    .then(() => {
+      showToast("Product link copied to clipboard!");
+    })
+    .catch((err) => {
+      console.error("Failed to copy the link:", err);
+      showToast("Failed to copy the link. Please try again.");
+    });
 
-//     const link = document.createElement("a");
-//     link.download = `${title}.png`;
-//     link.href = canvas.toDataURL("image/png");
-//     link.click();
-//   };
+  // Update Open Graph meta tags dynamically
+  const metaTitle = document.querySelector('meta[property="og:title"]');
+  const metaDescription = document.querySelector(
+    'meta[property="og:description"]'
+  );
+  const metaImage = document.querySelector('meta[property="og:image"]');
+  const metaUrl = document.querySelector('meta[property="og:url"]');
 
-//   image.onerror = () => {
-//     alert(
-//       "Unable to load image. Please check the URL or your server settings."
-//     );
-//   };
-// }
+  if (metaTitle)
+    metaTitle.setAttribute("content", `Check out this product: ${id}`);
+  if (metaDescription)
+    metaDescription.setAttribute(
+      "content",
+      "Find out more about this product!"
+    );
+  if (metaImage)
+    metaImage.setAttribute(
+      "content",
+      `https://example.com/images/product-${id}.jpg`
+    ); // Use actual product image URL
+  if (metaUrl) metaUrl.setAttribute("content", productUrl);
+}
 
 // Display products on current page with pagination
 function displayProducts(productsToShow) {
@@ -155,67 +183,78 @@ function createProductCard(product) {
   const maxPrice = Math.max(...prices);
 
   const card = document.createElement("div");
+  const branch = product.branch || "nargis"; // Use branch from product or fallback
   card.className = "product-card";
   card.innerHTML = `
-  <div class="img-container">
-    <div class="download-container">
-      <img class="download" src="./imgs/download.png" alt="Download" />
+    <div class="img-container">
+      <div class="download-container">
+        <img 
+          class="download" 
+          src="./imgs/download.png" 
+          onclick="shareProduct('${branch}', '${product.id}')" 
+          alt="Share Product" 
+        />
+      </div>
+      <img src="${product.img}" alt="${product.title}">
     </div>
-    <img src="${product.img}" alt="${product.title}">
-  </div>
-  <div class="product-info">
-    <small>${product.packaging}</small>
-    <h4 class="title">${product.title}</h4>
-  </div>
-  <div class="store-cards">
-    ${product.stores
-      .map((store) => {
-        const hasOffer = store["discount price"];
-        const priceValue = parseFloat(store.price);
-        let priceColor = "#7c7382";
-        let priceTitle = "";
+    <div class="product-info">
+      <small>${product.packaging || "No Packaging Info"}</small>
+      <h4 class="title">
+        <a class='title' href='/details.html?branch=${branch}&id=${product.id}'>
+          ${product.title}
+        </a>
+      </h4>
+    </div>
+    <div class="store-cards">
+      ${product.stores
+        .map((store) => {
+          const hasOffer = store["discount price"];
+          const priceValue = parseFloat(store.price);
+          let priceColor = "#7c7382";
+          let priceTitle = "";
 
-        if (product.stores.length > 1) {
-          if (priceValue === minPrice) {
-            priceColor = "green";
-            priceTitle = "Lowest price";
-          } else if (priceValue === maxPrice) {
-            priceColor = "red";
-            priceTitle = "Highest price";
+          if (product.stores.length > 1) {
+            if (priceValue === minPrice) {
+              priceColor = "green";
+              priceTitle = "Lowest price";
+            } else if (priceValue === maxPrice) {
+              priceColor = "red";
+              priceTitle = "Highest price";
+            }
           }
-        }
 
-        return `
-  <div class="store-card">
-    <img src="${stores[store.store].img}" alt="${store.store}" width="50px" />
-    <p 
-      title="${priceTitle}" 
-      style="color:${priceColor}; 
-             text-decoration:${hasOffer ? "line-through" : "none"}; 
-             font-size:${hasOffer ? "16px" : "30px"}; 
-             font-weight:${hasOffer ? "200" : "bold"};  
-             margin:${hasOffer ? "0" : "5px"};" 
-      class="price">
-        ${store.price}
-    </p>
-    ${
-      hasOffer
-        ? `<p 
-            title="${priceTitle}" 
-            style="color:#8B5DFF; 
-                   font-size:30px;
-                   font-weight:bold; 
-                   margin:0px;" 
-            class="price">
-                ${store["discount price"]}
-          </p>`
-        : ""
-    }
-  </div>`;
-      })
-      .join("")}
-  </div>`;
-
+          return `
+          <div class="store-card">
+            <img src="${stores[store.store].img}" alt="${
+            store.store
+          }" width="50px" />
+            <p 
+              title="${priceTitle}" 
+              style="color:${priceColor}; 
+                     text-decoration:${hasOffer ? "line-through" : "none"}; 
+                     font-size:${hasOffer ? "16px" : "30px"}; 
+                     font-weight:${hasOffer ? "200" : "bold"};  
+                     margin:${hasOffer ? "0" : "5px"};" 
+              class="price">
+                ${store.price}
+            </p>
+            ${
+              hasOffer
+                ? `<p 
+                    title="${priceTitle}" 
+                    style="color:#8B5DFF; 
+                           font-size:30px;
+                           font-weight:bold; 
+                           margin:0px;" 
+                    class="price">
+                      ${store["discount price"]}
+                  </p>`
+                : ""
+            }
+          </div>`;
+        })
+        .join("")}
+    </div>`;
   return card;
 }
 
