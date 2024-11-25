@@ -66,6 +66,7 @@
 
       // Create and append product card
       function displayProduct(product) {
+        document.title = product.title;
         const productContainer = document.getElementById("product-container");
         productContainer.innerHTML = ""; // Clear loading message
         const card = createProductCard(product);
@@ -92,6 +93,7 @@
 
       // Create Product Card (provided in the question)
       function createProductCard(product) {
+        const branch = getQueryParameter("branch");
         const prices = product.stores.map((store) => parseFloat(store.price));
         const minPrice = Math.min(...prices);
         const maxPrice = Math.max(...prices);
@@ -104,7 +106,7 @@
         </div>
         <div class="product-info">
           <small>${product.packaging}</small>
-          <h4 class="title">${product.title}</h4>
+          <h4 class="title">${product.title} (${branch})</h4>
         </div>
         <div class="store-cards">
           ${product.stores

@@ -35,6 +35,8 @@ const stores = {
 
 let products;
 
+let branch = "nargis";
+
 const branchProductsMap = {
   defaa: productsDefaa,
   maady: productsMaady,
@@ -79,6 +81,7 @@ branchRadios.forEach((radio) => {
   radio.addEventListener("change", function () {
     const selectedBranch = this.value;
     updateProducts(selectedBranch);
+    branch = this.value;
   });
 });
 
@@ -183,7 +186,6 @@ function createProductCard(product) {
   const maxPrice = Math.max(...prices);
 
   const card = document.createElement("div");
-  const branch = product.branch || "nargis"; // Use branch from product or fallback
   card.className = "product-card";
   card.innerHTML = `
     <div class="img-container">
