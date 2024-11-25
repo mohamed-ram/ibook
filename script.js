@@ -123,7 +123,7 @@ function showToast(message) {
 function shareProduct(branch, id) {
   // Generate the product URL
   console.log(branch, id);
-  const productUrl = `${window.location.origin}/details.html?branch=${branch}&id=${id}`;
+  const productUrl = `${window.location.origin}/ibook/details.html?branch=${branch}&id=${id}`;
 
   // Copy the URL to the clipboard
   navigator.clipboard
@@ -154,7 +154,7 @@ function shareProduct(branch, id) {
   if (metaImage)
     metaImage.setAttribute(
       "content",
-      `https://github.com/mohamed-ram/ibook/blob/main/imgs/stores/ibook.pngs`
+      `https://github.com/mohamed-ram/ibook/blob/main/imgs/stores/ibook.png`
     );
   if (metaUrl) metaUrl.setAttribute("content", productUrl);
 }
