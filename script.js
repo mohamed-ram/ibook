@@ -154,8 +154,8 @@ function shareProduct(branch, id) {
   if (metaImage)
     metaImage.setAttribute(
       "content",
-      `https://example.com/images/product-${id}.jpg`
-    ); // Use actual product image URL
+      `https://github.com/mohamed-ram/ibook/blob/main/imgs/stores/ibook.pngs`
+    );
   if (metaUrl) metaUrl.setAttribute("content", productUrl);
 }
 
@@ -200,7 +200,10 @@ function createProductCard(product) {
     <div class="product-info">
       <small>${product.packaging || "No Packaging Info"}</small>
       <h4 class="title">
-        <a class='title' href='/details.html?branch=${branch}&id=${product.id}'>
+        <a target='_blank' class='title' href='/ibook/details.html?branch=${branch}&id=${
+    product.id
+  }'>
+
           ${product.title}
         </a>
       </h4>
